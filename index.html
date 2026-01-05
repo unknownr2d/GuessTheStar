@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Celebrity Body Part Quiz</title>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Celebrity database - update these with your actual image filenames
+        const celebrities = {
+    'Natasha-Nice': {
+        name: 'Natasha-Nice',
+        full: 'img/full/Natasha-Nice.jpg',
+        quiz: 'img/quizImg/Natasha-Nice.jpg'
+    },
+    'Natasha-Nice2': {
+        name: 'Natasha-Nice2',
+        full: 'img/full/Natasha-Nice2.jpg',
+        quiz: 'img/quizImg/Natasha-Nice2.jpg'
+    },
+    'cherry-blossom': {
+        name: 'Cherry-Blossom',
+        full: 'img/full/cherry-blossom.jpg',
+        quiz: 'img/quizImg/cherry-blossom.jpg'
+    },
+    'ellis-c': {
+        name: 'Ellis-C',
+        full: 'img/full/ellis-c.jpg',
+        quiz: 'img/quizImg/ellis-c.jpg'
+    },
+    'jada-stevens': {
+        name: 'Jada-Stevens',
+        full: 'img/full/jada-stevens.jpg',
+        quiz: 'img/quizImg/jada-stevens.jpg'
+    },
+    'jinx-maze': {
+        name: 'Jinx-Maze',
+        full: 'img/full/jinx-maze.jpg',
+        quiz: 'img/quizImg/jinx-maze.jpg'
+    },
+    'laura-matrick': {
+        name: 'Laura-Matrick',
+        full: 'img/full/laura-matrick.jpg',
+        quiz: 'img/quizImg/laura-matrick.jpg'
+    },
+    'lexi-ward': {
+        name: 'Lexi-Ward',
+        full: 'img/full/lexi-ward.jpg',
+        quiz: 'img/quizImg/lexi-ward.jpg'
+    },
+    'macy-meadows': {
+        name: 'Macy-Meadows',
+        full: 'img/full/macy-meadows.jpg',
+        quiz: 'img/quizImg/macy-meadows.jpg'
+    },
+    'melody-marks': {
+        name: 'Melody-Marks',
+        full: 'img/full/melody-marks.jpg',
+        quiz: 'img/quizImg/melody-marks.jpg'
+    },
+    'nanami-mizusaki': {
+        name: 'Nanami-Mizusaki',
+        full: 'img/full/nanami-mizusaki.jpg',
+        quiz: 'img/quizImg/nanami-mizusaki.jpg'
+    },
+    'reira-kitagawa': {
+        name: 'Reira-Kitagawa',
+        full: 'img/full/reira-kitagawa.jpg',
+        quiz: 'img/quizImg/reira-kitagawa.jpg'
+    },
+    'sakura-kirishima': {
+        name: 'Sakura-Kirishima',
+        full: 'img/full/sakura-kirishima.jpg',
+        quiz: 'img/quizImg/sakura-kirishima.jpg'
+    },
+    'sarika-a': {
+        name: 'Sarika-A',
+        full: 'img/full/sarika-a.jpg',
+        quiz: 'img/quizImg/sarika-a.jpg'
+    },
+    'tsubaki-kato': {
+        name: 'Tsubaki-Kato',
+        full: 'img/full/tsubaki-kato.jpg',
+        quiz: 'img/quizImg/tsubaki-kato.jpg'
+    },
+};
+
+
+
+
+
+
+
+        // Helper function to get celebrity name from key (removes numbers)
+       const getCelebName = (key) => {
+            // Remove all numbers and replace all dashes with spaces
+            return celebrities[key].name.replace(/\d+/g, '').replace(/-/g, ' ').trim();
+        };
+
+        // Helper function to get unique celebrity names for answer options
+        const getUniqueCelebNames = () => {
+            const names = Object.values(celebrities).map(c => c.name.replace(/\d+/g, '').replace(/-/g, ' ').trim());
+            return [...new Set(names)]; // Remove duplicates
+        };
+        
+
+        function CelebrityQuiz() {
+            const [gameState, setGameState] = useState('start');
+            const [currentQuestion, setCurrentQuestion] = useState(0);
+            const [score, setScore] = useState(0);
+            const [feedback, setFeedback] = useState('');
+            const [quizQueue, setQuizQueue] = useState([]);
+            const [answerOptions, setAnswerOptions] = useState([]);
+            const [selectedAnswer, setSelectedAnswer] = useState(null);
+            const [bgImage, setBgImage] = useState('');
+            const [showAnswer, setShowAnswer] = useState(false);
+
+            const fullImages = Object.values(celebrities).map(c => c.full);
+
+            // Background image rotation
+            useEffect(() => {
+                const rotateBackground = () => {
+                    const randomImage = fullImages[Math.floor(Math.random() * fullImages.length)];
+                    setBgImage(randomImage);
+                };
+
+                rotateBackground();
+                const interval = setInterval(rotateBackground, 5000);
+                return () => clearInterval(interval);
+            }, []);
+
+            const generateAnswerOptions = (correctKey) => {
+                const correctName = getCelebName(correctKey);
+                const allUniqueNames = getUniqueCelebNames();
+                const otherNames = allUniqueNames.filter(name => name !== correctName);
+                
+                // Randomly select 3 wrong answers
+                const wrongAnswers = [];
+                while (wrongAnswers.length < 3 && wrongAnswers.length < otherNames.length) {
+                    const randomName = otherNames[Math.floor(Math.random() * otherNames.length)];
+                    if (!wrongAnswers.includes(randomName)) {
+                        wrongAnswers.push(randomName);
+                    }
+                }
+                
+                const allOptions = [...wrongAnswers, correctName];
+                return allOptions.sort(() => Math.random() - 0.5);
+            };
+
+            const startGame = () => {
+                const celebKeys = Object.keys(celebrities);
+                const shuffled = [...celebKeys].sort(() => Math.random() - 0.5).slice(0, 10);
+                setQuizQueue(shuffled);
+                setCurrentQuestion(0);
+                setScore(0);
+                setFeedback('');
+                setShowAnswer(false);
+                setSelectedAnswer(null);
+                setAnswerOptions(generateAnswerOptions(shuffled[0]));
+                setGameState('playing');
+            };
+
+            const handleAnswerSelect = (selectedName) => {
+                if (showAnswer) return;
+                
+                setSelectedAnswer(selectedName);
+                const currentCelebKey = quizQueue[currentQuestion];
+                const correctAnswer = getCelebName(currentCelebKey);
+
+                if (selectedName === correctAnswer) {
+                    setScore(score + 1);
+                    setFeedback('🎉 Correct!');
+                } else {
+                    setFeedback(`❌ Wrong! It was ${correctAnswer}`);
+                }
+
+                setShowAnswer(true);
+            };
+
+            const nextQuestion = () => {
+                if (currentQuestion < 9) {
+                    const nextQ = currentQuestion + 1;
+                    setCurrentQuestion(nextQ);
+                    setFeedback('');
+                    setShowAnswer(false);
+                    setSelectedAnswer(null);
+                    setAnswerOptions(generateAnswerOptions(quizQueue[nextQ]));
+                } else {
+                    setGameState('finished');
+                }
+            };
+
+            if (gameState === 'start') {
+                return (
+                    <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
+                        <div 
+                            className="absolute inset-0 bg-cover bg-center transition-all duration-1000"
+                            style={{ 
+                                backgroundImage: `url(${bgImage})`,
+                                filter: 'blur(8px) brightness(0.4)'
+                            }}
+                        />
+                        <div className="relative z-10 text-center text-white p-8">
+                            <h1 className="text-6xl font-bold mb-6">Celebrity Body Part Quiz</h1>
+                            <p className="text-2xl mb-8">Can you guess the celebrity from just one body part?</p>
+                            <button 
+                                onClick={startGame}
+                                className="bg-purple-600 hover:bg-purple-700 text-white px-12 py-4 rounded-full text-2xl font-bold transition-all transform hover:scale-105"
+                            >
+                                Start Quiz
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            if (gameState === 'finished') {
+                return (
+                    <div className="min-h-screen relative overflow-hidden flex items-center justify-center">
+                        <div 
+                            className="absolute inset-0 bg-cover bg-center transition-all duration-1000"
+                            style={{ 
+                                backgroundImage: `url(${bgImage})`,
+                                filter: 'blur(8px) brightness(0.4)'
+                            }}
+                        />
+                        <div className="relative z-10 text-center text-white p-8">
+                            <h1 className="text-6xl font-bold mb-6">Quiz Complete!</h1>
+                            <div className="bg-white/20 backdrop-blur-md rounded-3xl p-12 mb-8">
+                                <p className="text-3xl mb-4">Your Score</p>
+                                <p className="text-8xl font-bold">{score}/10</p>
+                                <p className="text-2xl mt-4">
+                                    {score >= 8 ? '🌟 Amazing!' : score >= 6 ? '👍 Good job!' : score >= 4 ? '😊 Not bad!' : '💪 Keep trying!'}
+                                </p>
+                            </div>
+                            <button 
+                                onClick={startGame}
+                                className="bg-purple-600 hover:bg-purple-700 text-white px-12 py-4 rounded-full text-2xl font-bold transition-all transform hover:scale-105"
+                            >
+                                Play Again
+                            </button>
+                        </div>
+                    </div>
+                );
+            }
+
+            const currentCelebKey = quizQueue[currentQuestion];
+            const currentCeleb = celebrities[currentCelebKey];
+
+            return (
+                <div className="min-h-screen relative overflow-hidden">
+                    <div 
+                        className="absolute inset-0 bg-cover bg-center transition-all duration-1000"
+                        style={{ 
+                            backgroundImage: `url(${bgImage})`,
+                            filter: 'blur(8px) brightness(0.3)'
+                        }}
+                    />
+                    
+                    <div className="relative z-10 min-h-screen flex flex-col items-center justify-center p-8">
+                        <div className="w-full max-w-3xl">
+                            <div className="flex justify-between items-center mb-6 text-white">
+                                <div className="text-2xl font-bold">Question {currentQuestion + 1}/10</div>
+                                <div className="text-2xl font-bold">Score: {score}</div>
+                            </div>
+
+                            <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-2xl">
+                                <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
+                                    Who is this celebrity?
+                                </h2>
+
+                                <div className="mb-6 flex justify-center">
+                                    <img 
+                                        src={currentCeleb.quiz} 
+                                        alt="Celebrity body part"
+                                        className="max-h-80 rounded-2xl shadow-lg object-contain"
+                                    />
+                                </div>
+
+                                {!showAnswer ? (
+                                    <div className="grid grid-cols-2 gap-4">
+                                        {answerOptions.map((name, index) => (
+                                            <button
+                                                key={index}
+                                                onClick={() => handleAnswerSelect(name)}
+                                                className="bg-purple-100 hover:bg-purple-200 text-gray-800 px-6 py-4 rounded-xl text-lg font-semibold transition-all transform hover:scale-105 border-2 border-purple-300"
+                                            >
+                                                {name}
+                                            </button>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <div className={`text-center text-3xl font-bold mb-6 ${feedback.includes('Correct') ? 'text-green-600' : 'text-red-600'}`}>
+                                            {feedback}
+                                        </div>
+                                        
+                                        <div className="mb-6 flex justify-center">
+                                            <img 
+                                                src={currentCeleb.full} 
+                                                alt={currentCeleb.name}
+                                                className="w-full rounded-2xl shadow-2xl object-contain"
+                                            />
+                                        </div>
+                                        
+                                        <button 
+                                            onClick={nextQuestion}
+                                            className="w-full bg-purple-600 hover:bg-purple-700 text-white px-8 py-4 rounded-full text-xl font-bold transition-all"
+                                        >
+                                            {currentQuestion < 9 ? 'Next Question →' : 'See Final Score'}
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<CelebrityQuiz />, document.getElementById('root'));
+    </script>
+</body>
+</html>

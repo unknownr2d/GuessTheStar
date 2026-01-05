@@ -1,0 +1,77 @@
+const celebrities = {
+    'Natasha-Nice': {
+        name: 'Natasha-Nice',
+        full: 'img/full/Natasha-Nice.jpg',
+        quiz: 'img/quizImg/Natasha-Nice.jpg'
+    },
+    'Natasha-Nice2': {
+        name: 'Natasha-Nice2',
+        full: 'img/full/Natasha-Nice2.jpg',
+        quiz: 'img/quizImg/Natasha-Nice2.jpg'
+    },
+    'cherry-blossom': {
+        name: 'Cherry-Blossom',
+        full: 'img/full/cherry-blossom.jpg',
+        quiz: 'img/quizImg/cherry-blossom.jpg'
+    },
+    'ellis-c': {
+        name: 'Ellis-C',
+        full: 'img/full/ellis-c.jpg',
+        quiz: 'img/quizImg/ellis-c.jpg'
+    },
+    'jada-stevens': {
+        name: 'Jada-Stevens',
+        full: 'img/full/jada-stevens.jpg',
+        quiz: 'img/quizImg/jada-stevens.jpg'
+    },
+    'jinx-maze': {
+        name: 'Jinx-Maze',
+        full: 'img/full/jinx-maze.jpg',
+        quiz: 'img/quizImg/jinx-maze.jpg'
+    },
+    'laura-matrick': {
+        name: 'Laura-Matrick',
+        full: 'img/full/laura-matrick.jpg',
+        quiz: 'img/quizImg/laura-matrick.jpg'
+    },
+    'lexi-ward': {
+        name: 'Lexi-Ward',
+        full: 'img/full/lexi-ward.jpg',
+        quiz: 'img/quizImg/lexi-ward.jpg'
+    },
+    'macy-meadows': {
+        name: 'Macy-Meadows',
+        full: 'img/full/macy-meadows.jpg',
+        quiz: 'img/quizImg/macy-meadows.jpg'
+    },
+    'melody-marks': {
+        name: 'Melody-Marks',
+        full: 'img/full/melody-marks.jpg',
+        quiz: 'img/quizImg/melody-marks.jpg'
+    },
+    'nanami-mizusaki': {
+        name: 'Nanami-Mizusaki',
+        full: 'img/full/nanami-mizusaki.jpg',
+        quiz: 'img/quizImg/nanami-mizusaki.jpg'
+    },
+    'reira-kitagawa': {
+        name: 'Reira-Kitagawa',
+        full: 'img/full/reira-kitagawa.jpg',
+        quiz: 'img/quizImg/reira-kitagawa.jpg'
+    },
+    'sakura-kirishima': {
+        name: 'Sakura-Kirishima',
+        full: 'img/full/sakura-kirishima.jpg',
+        quiz: 'img/quizImg/sakura-kirishima.jpg'
+    },
+    'sarika-a': {
+        name: 'Sarika-A',
+        full: 'img/full/sarika-a.jpg',
+        quiz: 'img/quizImg/sarika-a.jpg'
+    },
+    'tsubaki-kato': {
+        name: 'Tsubaki-Kato',
+        full: 'img/full/tsubaki-kato.jpg',
+        quiz: 'img/quizImg/tsubaki-kato.jpg'
+    },
+};
