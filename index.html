@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PornStar Body Part Quiz</title>
+    <title>Porn Star Body Part Quiz</title>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -15,7 +15,7 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
-        // Celebrity database - update these with your actual image filenames
+        // Porn Star database - update these with your actual image filenames
         const celebrities = {
     'Natasha-Nice': {
         name: 'Natasha-Nice',
@@ -100,20 +100,20 @@
 
 
 
-        // Helper function to get celebrity name from key (removes numbers)
+        // Helper function to get Porn Star name from key (removes numbers)
        const getCelebName = (key) => {
             // Remove all numbers and replace all dashes with spaces
             return celebrities[key].name.replace(/\d+/g, '').replace(/-/g, ' ').trim();
         };
 
-        // Helper function to get unique celebrity names for answer options
+        // Helper function to get unique Porn Star names for answer options
         const getUniqueCelebNames = () => {
             const names = Object.values(celebrities).map(c => c.name.replace(/\d+/g, '').replace(/-/g, ' ').trim());
             return [...new Set(names)]; // Remove duplicates
         };
         
 
-        function CelebrityQuiz() {
+        function PornStarQuiz() {
             const [gameState, setGameState] = useState('start');
             const [currentQuestion, setCurrentQuestion] = useState(0);
             const [score, setScore] = useState(0);
@@ -211,7 +211,7 @@
                         />
                         <div className="relative z-10 text-center text-white p-8">
                             <h1 className="text-6xl font-bold mb-6">Only the pussy!</h1>
-                            <p className="text-2xl mb-8">Can you guess the PornStar from it?</p>
+                            <p className="text-2xl mb-8">Can you guess the Porn Star from it?</p>
                             <button 
                                 onClick={startGame}
                                 className="bg-purple-600 hover:bg-purple-700 text-white px-12 py-4 rounded-full text-2xl font-bold transition-all transform hover:scale-105"
@@ -275,13 +275,13 @@
 
                             <div className="bg-white/95 backdrop-blur-md rounded-3xl p-8 shadow-2xl">
                                 <h2 className="text-3xl font-bold text-center mb-6 text-gray-800">
-                                    Who is this celebrity?
+                                    Who is this Porn Star?
                                 </h2>
 
                                 <div className="mb-6 flex justify-center">
                                     <img 
                                         src={currentCeleb.quiz} 
-                                        alt="Celebrity body part"
+                                        alt="Porn Star body part"
                                         className="max-h-80 rounded-2xl shadow-lg object-contain"
                                     />
                                 </div>
@@ -327,7 +327,7 @@
             );
         }
 
-        ReactDOM.render(<CelebrityQuiz />, document.getElementById('root'));
+        ReactDOM.render(<PornStarQuiz />, document.getElementById('root'));
     </script>
 </body>
 </html>
